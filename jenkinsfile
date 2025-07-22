@@ -3,8 +3,8 @@ pipeline {
 
   environment {
     IMAGE_NAME = "java-hello-app"
-    K8S_DEPLOYMENT = "deployment.yaml"
-    K8S_SERVICE = "service.yaml"
+    CONTAINER_NAME = "java-hello-container"
+    PORT = "8090
   }
 
   stages {
@@ -26,12 +26,27 @@ pipeline {
       }
     }
 
-    stage('Deploy to kind Kubernetes') {
+    stage('Run Docker Container') {
       steps {
-        sh 'kubectl apply -f ${K8S_DEPLOYMENT}'
-        sh 'kubectl apply -f ${K8S_SERVICE}'
+        script {
+          // Stop and remove any existing with the same name
+          sh "docker rm -f ${CONTAINER_NAME} || true"
+
+          // Run the container
+          sh """
+            docker run -d --name ${CONTAINER_NAME} -p ${PORT}:8090 ${IMAGE_NAME}
+          """}
       }
     }
   }
 }
 
+post {
+  success {
+    echo "App is running inside the docker container"
+  }
+  failure {
+    echo "Something went wrong during the pipeline execution"
+  }
+ }
+}
