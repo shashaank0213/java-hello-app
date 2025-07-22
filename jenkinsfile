@@ -40,13 +40,3 @@ pipeline {
     }
   }
 }
-
-post {
-  success {
-    echo "App is running inside the docker container"
-  }
-  failure {
-    echo "Something went wrong during the pipeline execution"
-  }
- }
-}
