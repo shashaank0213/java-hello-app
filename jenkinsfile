@@ -4,7 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = "java-hello-app"
     CONTAINER_NAME = "java-hello-container"
-    PORT = "8090
+    PORT = "8090"
   }
 
   stages {
